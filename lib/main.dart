@@ -1,19 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'providers/auth_provider.dart';
-
-// ⚠️ 클래스 이름 충돌 방지: splash_screen.dart에 정의된 SplashScreen만 import
-import 'auth/screens/splash_screen.dart';
-import 'auth/screens/signup_screen.dart';
-import 'auth/screens/home_screen.dart';
-
-// 💡 만약 login_screen.dart에도 SplashScreen이 있다면 다음과 같이 prefix 붙이기
-import 'auth/screens/login_screen.dart' as login;
+import 'screens/add_product_screen.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(create: (_) => AuthProvider(), child: const MyApp()),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,15 +11,65 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '마교 쇼핑몰',
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const SplashScreen(), // ✅ splash_screen.dart 기준
-        '/login': (context) => const login.LoginScreen(), // ✅ prefix 사용
-        '/signup': (context) => const SignUpScreen(),
-        '/home': (context) => const HomeScreen(),
-      },
+      title: '판매자 앱',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const AddProductScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        title: const Text('쇼핑몰 판매자 센터'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddProductScreen(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                minimumSize: const Size(200, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: const Text(
+                '상품 등록',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "'천마를 위하여'",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
